@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rekap Angka 00–99</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    {% block content %}{% endblock %}
+
+    <script>
+        window.__INITIAL_DATA__ = {
+            dashboard: {{ (dashboard|default({}))|tojson }},
+            grid: {{ (grid_data|default([]))|tojson }},
+            entries: {{ (entries|default([]))|tojson }},
+            cuts: {{ (cuts|default([]))|tojson }},
+            people_summary: {{ (people_summary|default([]))|tojson }}
+        };
+    </script>
+
+    <!-- OCR untuk membaca angka dari gambar di browser -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

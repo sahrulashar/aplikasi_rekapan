@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-shell">
+  <section class="card person-recap-card">
+    <div class="section-head">
+      <div>
+        <h2>{{ person_name }}</h2>
+      </div>
+
+      <a href="/" class="back-btn">Kembali</a>
+    </div>
+
+    {% set dates = recaps | map(attribute='date') | unique | list %}
+
+    <div class="recap-table">
+      <div class="recap-row recap-head">
+        <div>Hari / Tanggal</div>
+        <div>SDY</div>
+        <div>SGP</div>
+        <div>HKG</div>
+        <div>Total</div>
+      </div>
+
+      {% for tanggal in dates %}
+        {% set label = namespace(value='') %}
+
+        {% set sdy = namespace(total=0, rp=0, bonus_rp=0, akhir=0) %}
+        {% set sgp = namespace(total=0, rp=0, bonus_rp=0, akhir=0) %}
+        {% set hkg = namespace(total=0, rp=0, bonus_rp=0, akhir=0) %}
+
+        {% for row in recaps %}
+          {% if row.date == tanggal and label.value == '' %}
+            {% set label.value = row.date_label %}
+          {% endif %}
+
+          {% if row.date == tanggal and row.session == 'SDY' %}
+            {% set sdy.total = row.total %}
+            {% set sdy.rp = row.total_rp %}
+            {% set sdy.bonus_rp = row.bonus_rp or 0 %}
+            {% set sdy.akhir = row.total_akhir or (sdy.bonus_rp - sdy.rp) %}
+          {% endif %}
+
+          {% if row.date == tanggal and row.session == 'SGP' %}
+            {% set sgp.total = row.total %}
+            {% set sgp.rp = row.total_rp %}
+            {% set sgp.bonus_rp = row.bonus_rp or 0 %}
+            {% set sgp.akhir = row.total_akhir or (sgp.bonus_rp - sgp.rp) %}
+          {% endif %}
+
+          {% if row.date == tanggal and row.session == 'HKG' %}
+            {% set hkg.total = row.total %}
+            {% set hkg.rp = row.total_rp %}
+            {% set hkg.bonus_rp = row.bonus_rp or 0 %}
+            {% set hkg.akhir = row.total_akhir or (hkg.bonus_rp - hkg.rp) %}
+          {% endif %}
+        {% endfor %}
+
+        {% set total_nilai = sdy.total + sgp.total + hkg.total %}
+        {% set total_rp = sdy.rp + sgp.rp + hkg.rp %}
+        {% set total_bonus = sdy.bonus_rp + sgp.bonus_rp + hkg.bonus_rp %}
+        {% set total_akhir = total_bonus - total_rp %}
+
+        <div class="recap-row">
+          <div class="recap-date">{{ label.value }}</div>
+
+          <div
+            class="recap-cell session-edit-cell"
+            data-person="{{ person_index }}"
+            data-date="{{ tanggal }}"
+            data-session="SDY"
+          >
+            <input class="session-total-input" type="number" value="{{ sdy.total }}" readonly>
+
+            <span>Total Rp: Rp {{ "{:,}".format(sdy.rp).replace(",", ".") }}</span>
+
+            <div class="bonus-line">
+              Bonus Rp: Rp {{ "{:,}".format(sdy.bonus_rp).replace(",", ".") }}
+            </div>
+
+            <div class="akhir-line {% if sdy.akhir < 0 %}minus{% else %}plus{% endif %}">
+              Total Akhir: Rp {{ "{:,}".format(sdy.akhir).replace(",", ".") }}
+            </div>
+
+            <div class="session-actions">
+              <button type="button" class="edit-session-btn">Edit</button>
+              <button type="button" class="save-session-btn">Simpan</button>
+              <button type="button" class="delete-session-btn">Hapus</button>
+            </div>
+          </div>
+
+          <div
+            class="recap-cell session-edit-cell"
+            data-person="{{ person_index }}"
+            data-date="{{ tanggal }}"
+            data-session="SGP"
+          >
+            <input class="session-total-input" type="number" value="{{ sgp.total }}" readonly>
+
+            <span>Total Rp: Rp {{ "{:,}".format(sgp.rp).replace(",", ".") }}</span>
+
+            <div class="bonus-line">
+              Bonus Rp: Rp {{ "{:,}".format(sgp.bonus_rp).replace(",", ".") }}
+            </div>
+
+            <div class="akhir-line {% if sgp.akhir < 0 %}minus{% else %}plus{% endif %}">
+              Total Akhir: Rp {{ "{:,}".format(sgp.akhir).replace(",", ".") }}
+            </div>
+
+            <div class="session-actions">
+              <button type="button" class="edit-session-btn">Edit</button>
+              <button type="button" class="save-session-btn">Simpan</button>
+              <button type="button" class="delete-session-btn">Hapus</button>
+            </div>
+          </div>
+
+          <div
+            class="recap-cell session-edit-cell"
+            data-person="{{ person_index }}"
+            data-date="{{ tanggal }}"
+            data-session="HKG"
+          >
+            <input class="session-total-input" type="number" value="{{ hkg.total }}" readonly>
+
+            <span>Total Rp: Rp {{ "{:,}".format(hkg.rp).replace(",", ".") }}</span>
+
+            <div class="bonus-line">
+              Bonus Rp: Rp {{ "{:,}".format(hkg.bonus_rp).replace(",", ".") }}
+            </div>
+
+            <div class="akhir-line {% if hkg.akhir < 0 %}minus{% else %}plus{% endif %}">
+              Total Akhir: Rp {{ "{:,}".format(hkg.akhir).replace(",", ".") }}
+            </div>
+
+            <div class="session-actions">
+              <button type="button" class="edit-session-btn">Edit</button>
+              <button type="button" class="save-session-btn">Simpan</button>
+              <button type="button" class="delete-session-btn">Hapus</button>
+            </div>
+          </div>
+
+          <div class="recap-cell total-cell">
+            <strong>{{ total_nilai }}</strong>
+            <span>Total Rp: Rp {{ "{:,}".format(total_rp).replace(",", ".") }}</span>
+
+            <div class="bonus-line">
+              Bonus Rp: Rp {{ "{:,}".format(total_bonus).replace(",", ".") }}
+            </div>
+
+            <div class="akhir-line {% if total_akhir < 0 %}minus{% else %}plus{% endif %}">
+              Total Akhir: Rp {{ "{:,}".format(total_akhir).replace(",", ".") }}
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <div class="empty-state">Belum ada data rekap sesi.</div>
+      {% endfor %}
+    </div>
+  </section>
+</div>
+{% endblock %}
