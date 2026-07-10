@@ -39,7 +39,9 @@ const state = {
 };
 
 const statsGrid = document.getElementById('statsGrid');
-const isDashboardPage = window.location.pathname === '/';
+const currentPath = window.location.pathname;
+const isDashboardPage = currentPath === '/';
+const isRekapanPage = currentPath === '/rekapan';
 const gridBoard = document.getElementById('gridBoard');
 const entryHistory = document.getElementById('entryHistory');
 const alertBox = document.getElementById('alertBox');
@@ -269,11 +271,10 @@ function renderStats() {
   if (!statsGrid) return;
 
   const dashboard = state.dashboard || {};
-
   const totalMasuk = Number(dashboard.total_in ?? 0);
   const totalHarga = totalMasuk * 750;
 
-  if (isDashboardPage) {
+  if (isRekapanPage) {
     statsGrid.classList.add('dashboard-stats-grid');
     statsGrid.innerHTML = `
       <div class="card stat-card stat-card-with-action dashboard-omzet-card">
@@ -289,35 +290,7 @@ function renderStats() {
   }
 
   statsGrid.classList.remove('dashboard-stats-grid');
-  statsGrid.innerHTML = `
-    <div class="card stat-card">
-      <div class="stat-label">Total Omzet</div>
-      <div class="stat-value">${escapeHtml(totalMasuk)}</div>
-      <div class="stat-sub">
-        Total Harga: Rp ${formatRupiah(totalHarga)}
-      </div>
-    </div>
-
-    <div class="card stat-card">
-      <div class="stat-label">Total Potong</div>
-      <div class="stat-value">${escapeHtml(dashboard.total_cut ?? 0)}</div>
-    </div>
-
-    <div class="card stat-card">
-      <div class="stat-label">Total Sisa</div>
-      <div class="stat-value">${escapeHtml(dashboard.total_remaining ?? 0)}</div>
-    </div>
-
-    <div class="card stat-card">
-      <div class="stat-label">Transaksi Input</div>
-      <div class="stat-value">${escapeHtml(dashboard.transaction_count ?? 0)}</div>
-    </div>
-
-    <div class="card stat-card">
-      <div class="stat-label">Angka Aktif</div>
-      <div class="stat-value">${escapeHtml(dashboard.active_numbers ?? 0)}</div>
-    </div>
-  `;
+  statsGrid.innerHTML = '';
 }
 
 function renderGrid() {
@@ -1183,9 +1156,9 @@ async function convertImageFileToPreview(file) {
       return;
     }
 
-    await submitRawInputFromOcr(convertedText);
-    setOcrStatus('OCR tersimpan', 'success');
-    showAlert('OCR selesai dan langsung disimpan.', 'success');
+    showOcrPreview(convertedText, confidenceReport);
+    setOcrStatus(Number.isFinite(confidenceReport.score) ? `Siap dicek (${confidenceReport.score}%)` : 'Siap dicek', 'success');
+    showAlert('OCR selesai. Cek preview dulu, lalu klik Simpan Hasil OCR.', 'success');
   } catch (error) {
     setOcrStatus('Gagal OCR', 'error');
     showAlert(error.message || 'Gagal membaca gambar.', 'error');

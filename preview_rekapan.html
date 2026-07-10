@@ -1,0 +1,2393 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#07111f">
+    <title>Aplikasi Rekapan Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="file:///mnt/data/Aplikasi_Rekapan_Pro_UI/static/css/style.css">
+</head>
+<body class="rekapan-page app-pro-theme">
+    <div class="ambient-glow" aria-hidden="true"></div>
+    
+<div class="page-shell pro-shell">
+    <header class="hero card premium-hero">
+        <div class="hero-main">
+            <div class="brand-row">
+                <div class="brand-mark">AR</div>
+                <div>
+                    <p class="brand-kicker">Aplikasi Rekapan</p>
+                    <strong>Control Center</strong>
+                </div>
+            </div>
+            
+            <h1>
+                
+                    Rekapan Data
+                
+            </h1>
+            <p class="muted hero-copy">
+                
+                    Pantau grid 00–99, potongan global, angka aktif, dan rekapan nilai per nama dalam satu tampilan eksekutif.
+                
+            </p>
+
+            <div class="hero-insight-row">
+                <div class="session-clock-card">
+                    <span class="session-clock-label">Waktu WITA</span>
+                    <div id="liveClock" class="session-clock-time">00:00:00</div>
+                    <div id="liveSession" class="session-clock-session">Sekarang Memasuki Sesi -</div>
+                </div>
+
+                <div class="hero-mini-stat">
+                    <span>Harga / Point</span>
+                    <strong>Rp 750</strong>
+                </div>
+
+                <div class="hero-mini-stat">
+                    <span>Total Harga</span>
+                    <strong>Rp 21.750</strong>
+                </div>
+            </div>
+        </div>
+
+        <nav class="top-menu" aria-label="Menu utama">
+            <a href="/" class="top-menu-btn ">Dashboard</a>
+            <a href="/rekapan" class="top-menu-btn active">Rekapan</a>
+            <a href="/riwayat" class="top-menu-btn ">Riwayat Input</a>
+            <a href="/logout" class="top-menu-btn logout-menu">Logout</a>
+        </nav>
+    </header>
+
+    
+
+    
+    <section class="stats-grid" id="statsGrid">
+        <div class="card stat-card">
+            <div class="stat-label">Total Omzet</div>
+            <div class="stat-value">29</div>
+            <div class="stat-sub">Total Harga: Rp 21.750</div>
+        </div>
+        <div class="card stat-card">
+            <div class="stat-label">Total Potong</div>
+            <div class="stat-value">0</div>
+        </div>
+        <div class="card stat-card">
+            <div class="stat-label">Total Sisa</div>
+            <div class="stat-value">29</div>
+        </div>
+        <div class="card stat-card">
+            <div class="stat-label">Transaksi Input</div>
+            <div class="stat-value">8</div>
+        </div>
+        <div class="card stat-card">
+            <div class="stat-label">Angka Aktif</div>
+            <div class="stat-value">6</div>
+        </div>
+    </section>
+
+    <section class="card cut-card rekapan-cut-card action-surface-card">
+        <div class="section-head section-head-strong">
+            <div>
+                <h2>Potong Semua Angka</h2>
+            </div>
+            <span class="tag warning">Aksi Massal</span>
+        </div>
+
+        <form id="cutAllForm" class="cut-form compact-form">
+            <div class="field-grid action-field-grid">
+                <div>
+                    <label for="cut_all_value">Jumlah potong</label>
+                    <input id="cut_all_value" name="cut_value" type="number" min="1" placeholder="10">
+                </div>
+                <div>
+                    <label for="cut_all_note">Catatan</label>
+                    <input id="cut_all_note" name="note" type="text" placeholder="Opsional">
+                </div>
+                <button type="submit" class="secondary">Potong Semua</button>
+            </div>
+        </form>
+
+    </section>
+
+    <section class="card data-grid-card">
+        <div class="section-head section-head-strong">
+            <div>
+                <p class="section-kicker">Number Board</p>
+                <h2>Grid Rekapan 00–99</h2>
+            </div>
+            <div class="toolbar">
+                <input id="searchNumber" type="text" placeholder="Cari angka, contoh 72">
+                <button id="filterActiveBtn" type="button" class="ghost">Tampilkan aktif saja</button>
+            </div>
+        </div>
+
+        <div class="send-panel">
+            <div class="send-panel-head">
+                <div>
+                    <p class="section-kicker">Format Kirim</p>
+                    <h3>Kirim Angka Aktif</h3>
+                </div>
+                <button id="copyActiveBtn" type="button" class="ghost">Copy</button>
+            </div>
+            <textarea id="activeCopyBox" class="copy-box mono" readonly placeholder="Angka aktif akan muncul di sini..."></textarea>
+        </div>
+
+        <div id="gridBoard" class="grid-board">
+            
+                
+                    <div class="num-card inactive" data-number="00">
+                        <div class="num-head">
+                            <div class="num-index mono">00</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="01">
+                        <div class="num-head">
+                            <div class="num-index mono">01</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="02">
+                        <div class="num-head">
+                            <div class="num-index mono">02</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="03">
+                        <div class="num-head">
+                            <div class="num-index mono">03</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="04">
+                        <div class="num-head">
+                            <div class="num-index mono">04</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="05">
+                        <div class="num-head">
+                            <div class="num-index mono">05</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="06">
+                        <div class="num-head">
+                            <div class="num-index mono">06</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card " data-number="07">
+                        <div class="num-head">
+                            <div class="num-index mono">07</div>
+                            <div class="badge">aktif</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    
+                                        <span class="value-chip" data-tooltip="Suhadi Cua" title="Suhadi Cua">9</span>
+                                    
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>9</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>9</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card " data-number="08">
+                        <div class="num-head">
+                            <div class="num-index mono">08</div>
+                            <div class="badge">aktif</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    
+                                        <span class="value-chip" data-tooltip="Suhadi Cua" title="Suhadi Cua">2</span>
+                                    
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>2</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>2</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="09">
+                        <div class="num-head">
+                            <div class="num-index mono">09</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="10">
+                        <div class="num-head">
+                            <div class="num-index mono">10</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="11">
+                        <div class="num-head">
+                            <div class="num-index mono">11</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="12">
+                        <div class="num-head">
+                            <div class="num-index mono">12</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card " data-number="13">
+                        <div class="num-head">
+                            <div class="num-index mono">13</div>
+                            <div class="badge">aktif</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    
+                                        <span class="value-chip" data-tooltip="Suhadi Cua" title="Suhadi Cua">2</span>
+                                    
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>2</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>2</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="14">
+                        <div class="num-head">
+                            <div class="num-index mono">14</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card " data-number="15">
+                        <div class="num-head">
+                            <div class="num-index mono">15</div>
+                            <div class="badge">aktif</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    
+                                        <span class="value-chip" data-tooltip="Suhadi Cua" title="Suhadi Cua">3</span>
+                                    
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>3</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>3</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="16">
+                        <div class="num-head">
+                            <div class="num-index mono">16</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="17">
+                        <div class="num-head">
+                            <div class="num-index mono">17</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="18">
+                        <div class="num-head">
+                            <div class="num-index mono">18</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="19">
+                        <div class="num-head">
+                            <div class="num-index mono">19</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="20">
+                        <div class="num-head">
+                            <div class="num-index mono">20</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="21">
+                        <div class="num-head">
+                            <div class="num-index mono">21</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="22">
+                        <div class="num-head">
+                            <div class="num-index mono">22</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="23">
+                        <div class="num-head">
+                            <div class="num-index mono">23</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="24">
+                        <div class="num-head">
+                            <div class="num-index mono">24</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="25">
+                        <div class="num-head">
+                            <div class="num-index mono">25</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="26">
+                        <div class="num-head">
+                            <div class="num-index mono">26</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="27">
+                        <div class="num-head">
+                            <div class="num-index mono">27</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="28">
+                        <div class="num-head">
+                            <div class="num-index mono">28</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="29">
+                        <div class="num-head">
+                            <div class="num-index mono">29</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="30">
+                        <div class="num-head">
+                            <div class="num-index mono">30</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="31">
+                        <div class="num-head">
+                            <div class="num-index mono">31</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="32">
+                        <div class="num-head">
+                            <div class="num-index mono">32</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="33">
+                        <div class="num-head">
+                            <div class="num-index mono">33</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="34">
+                        <div class="num-head">
+                            <div class="num-index mono">34</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="35">
+                        <div class="num-head">
+                            <div class="num-index mono">35</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="36">
+                        <div class="num-head">
+                            <div class="num-index mono">36</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="37">
+                        <div class="num-head">
+                            <div class="num-index mono">37</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="38">
+                        <div class="num-head">
+                            <div class="num-index mono">38</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="39">
+                        <div class="num-head">
+                            <div class="num-index mono">39</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="40">
+                        <div class="num-head">
+                            <div class="num-index mono">40</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="41">
+                        <div class="num-head">
+                            <div class="num-index mono">41</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="42">
+                        <div class="num-head">
+                            <div class="num-index mono">42</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="43">
+                        <div class="num-head">
+                            <div class="num-index mono">43</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="44">
+                        <div class="num-head">
+                            <div class="num-index mono">44</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="45">
+                        <div class="num-head">
+                            <div class="num-index mono">45</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="46">
+                        <div class="num-head">
+                            <div class="num-index mono">46</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="47">
+                        <div class="num-head">
+                            <div class="num-index mono">47</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="48">
+                        <div class="num-head">
+                            <div class="num-index mono">48</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="49">
+                        <div class="num-head">
+                            <div class="num-index mono">49</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="50">
+                        <div class="num-head">
+                            <div class="num-index mono">50</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="51">
+                        <div class="num-head">
+                            <div class="num-index mono">51</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="52">
+                        <div class="num-head">
+                            <div class="num-index mono">52</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="53">
+                        <div class="num-head">
+                            <div class="num-index mono">53</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="54">
+                        <div class="num-head">
+                            <div class="num-index mono">54</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="55">
+                        <div class="num-head">
+                            <div class="num-index mono">55</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="56">
+                        <div class="num-head">
+                            <div class="num-index mono">56</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="57">
+                        <div class="num-head">
+                            <div class="num-index mono">57</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="58">
+                        <div class="num-head">
+                            <div class="num-index mono">58</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="59">
+                        <div class="num-head">
+                            <div class="num-index mono">59</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="60">
+                        <div class="num-head">
+                            <div class="num-index mono">60</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="61">
+                        <div class="num-head">
+                            <div class="num-index mono">61</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="62">
+                        <div class="num-head">
+                            <div class="num-index mono">62</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="63">
+                        <div class="num-head">
+                            <div class="num-index mono">63</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="64">
+                        <div class="num-head">
+                            <div class="num-index mono">64</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="65">
+                        <div class="num-head">
+                            <div class="num-index mono">65</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="66">
+                        <div class="num-head">
+                            <div class="num-index mono">66</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="67">
+                        <div class="num-head">
+                            <div class="num-index mono">67</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="68">
+                        <div class="num-head">
+                            <div class="num-index mono">68</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="69">
+                        <div class="num-head">
+                            <div class="num-index mono">69</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="70">
+                        <div class="num-head">
+                            <div class="num-index mono">70</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="71">
+                        <div class="num-head">
+                            <div class="num-index mono">71</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card " data-number="72">
+                        <div class="num-head">
+                            <div class="num-index mono">72</div>
+                            <div class="badge">aktif</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    
+                                        <span class="value-chip" data-tooltip="Suhadi Cua" title="Suhadi Cua">5</span>
+                                    
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>5</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>5</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="73">
+                        <div class="num-head">
+                            <div class="num-index mono">73</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="74">
+                        <div class="num-head">
+                            <div class="num-index mono">74</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="75">
+                        <div class="num-head">
+                            <div class="num-index mono">75</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="76">
+                        <div class="num-head">
+                            <div class="num-index mono">76</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="77">
+                        <div class="num-head">
+                            <div class="num-index mono">77</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="78">
+                        <div class="num-head">
+                            <div class="num-index mono">78</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="79">
+                        <div class="num-head">
+                            <div class="num-index mono">79</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="80">
+                        <div class="num-head">
+                            <div class="num-index mono">80</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="81">
+                        <div class="num-head">
+                            <div class="num-index mono">81</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="82">
+                        <div class="num-head">
+                            <div class="num-index mono">82</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="83">
+                        <div class="num-head">
+                            <div class="num-index mono">83</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="84">
+                        <div class="num-head">
+                            <div class="num-index mono">84</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="85">
+                        <div class="num-head">
+                            <div class="num-index mono">85</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="86">
+                        <div class="num-head">
+                            <div class="num-index mono">86</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="87">
+                        <div class="num-head">
+                            <div class="num-index mono">87</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="88">
+                        <div class="num-head">
+                            <div class="num-index mono">88</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card " data-number="89">
+                        <div class="num-head">
+                            <div class="num-index mono">89</div>
+                            <div class="badge">aktif</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    
+                                        <span class="value-chip" data-tooltip="Suhadi Cua" title="Suhadi Cua">8</span>
+                                    
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>8</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>8</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="90">
+                        <div class="num-head">
+                            <div class="num-index mono">90</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="91">
+                        <div class="num-head">
+                            <div class="num-index mono">91</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="92">
+                        <div class="num-head">
+                            <div class="num-index mono">92</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="93">
+                        <div class="num-head">
+                            <div class="num-index mono">93</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="94">
+                        <div class="num-head">
+                            <div class="num-index mono">94</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="95">
+                        <div class="num-head">
+                            <div class="num-index mono">95</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="96">
+                        <div class="num-head">
+                            <div class="num-index mono">96</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="97">
+                        <div class="num-head">
+                            <div class="num-index mono">97</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="98">
+                        <div class="num-head">
+                            <div class="num-index mono">98</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+                    <div class="num-card inactive" data-number="99">
+                        <div class="num-head">
+                            <div class="num-index mono">99</div>
+                            <div class="badge">kosong</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                
+                                    -
+                                
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>0</strong></div>
+                            <div class="mini"><span>Potong</span><strong>0</strong></div>
+                            <div class="mini positif"><span>Sisa</span><strong>0</strong></div>
+                        </div>
+                    </div>
+                
+            
+        </div>
+    </section>
+
+    <section class="card division-card pro-division-card">
+        <div class="section-head section-head-strong">
+            <div>
+                <p class="section-kicker">People Summary</p>
+                <h2>Rekapan Nilai per Nama</h2>
+            </div>
+        </div>
+
+        <div class="bonus-number-wrap premium-input-block">
+            <label for="bonusNumberInput">Angka bonus</label>
+            <input id="bonusNumberInput" type="text" maxlength="2" placeholder="Contoh: 89" autocomplete="off">
+        </div>
+
+        <div id="divisionBoard" class="division-board"></div>
+    </section>
+    
+
+    
+</div>
+
+
+    <script>
+        window.__INITIAL_DATA__ = {
+            dashboard: {"active_numbers": 6, "total_cut": 0, "total_in": 29, "total_remaining": 29, "transaction_count": 8},
+            grid: [{"has_data": false, "number": "00", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "01", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "02", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "03", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "04", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "05", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "06", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": true, "number": "07", "remaining": 9, "total_cut": 0, "total_in": 9, "value_details": [{"person_name": "Suhadi Cua", "value": 9}], "value_list": [9]}, {"has_data": true, "number": "08", "remaining": 2, "total_cut": 0, "total_in": 2, "value_details": [{"person_name": "Suhadi Cua", "value": 2}], "value_list": [2]}, {"has_data": false, "number": "09", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "10", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "11", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "12", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": true, "number": "13", "remaining": 2, "total_cut": 0, "total_in": 2, "value_details": [{"person_name": "Suhadi Cua", "value": 2}], "value_list": [2]}, {"has_data": false, "number": "14", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": true, "number": "15", "remaining": 3, "total_cut": 0, "total_in": 3, "value_details": [{"person_name": "Suhadi Cua", "value": 3}], "value_list": [3]}, {"has_data": false, "number": "16", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "17", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "18", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "19", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "20", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "21", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "22", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "23", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "24", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "25", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "26", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "27", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "28", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "29", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "30", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "31", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "32", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "33", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "34", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "35", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "36", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "37", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "38", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "39", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "40", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "41", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "42", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "43", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "44", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "45", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "46", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "47", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "48", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "49", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "50", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "51", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "52", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "53", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "54", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "55", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "56", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "57", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "58", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "59", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "60", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "61", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "62", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "63", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "64", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "65", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "66", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "67", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "68", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "69", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "70", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "71", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": true, "number": "72", "remaining": 5, "total_cut": 0, "total_in": 5, "value_details": [{"person_name": "Suhadi Cua", "value": 5}], "value_list": [5]}, {"has_data": false, "number": "73", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "74", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "75", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "76", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "77", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "78", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "79", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "80", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "81", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "82", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "83", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "84", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "85", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "86", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "87", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "88", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": true, "number": "89", "remaining": 8, "total_cut": 0, "total_in": 8, "value_details": [{"person_name": "Suhadi Cua", "value": 8}], "value_list": [8]}, {"has_data": false, "number": "90", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "91", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "92", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "93", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "94", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "95", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "96", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "97", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "98", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}, {"has_data": false, "number": "99", "remaining": 0, "total_cut": 0, "total_in": 0, "value_details": [], "value_list": []}],
+            entries: [{"created_at": "2026-07-06 20:00:00", "id": 1, "items": [{"number": 7, "value": 9}], "raw_input": "07x9"}],
+            cuts: [],
+            people_summary: [{"person_index": 1, "total": 20}]
+        };
+    </script>
+
+    <!-- OCR untuk membaca angka dari gambar di browser -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script src="file:///mnt/data/Aplikasi_Rekapan_Pro_UI/static/js/app.js"></script>
+</body>
+</html>

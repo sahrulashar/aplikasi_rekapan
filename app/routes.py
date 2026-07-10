@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Blueprint, jsonify, render_template, request, redirect, url_for
 from .parser import ParseError, parse_input
 from .services import (
@@ -10,6 +11,8 @@ from .services import (
     get_recent_cuts,
     get_recent_entries,
     save_entry,
+    upsert_session_manual_edit,
+    delete_session_manual_edit,
 )
 from .services import get_person_session_recaps
 
@@ -45,6 +48,11 @@ def index():
 @main_bp.get('/rekapan')
 def rekapan():
     return render_template('index.html', **_page_context('rekapan'))
+
+
+@main_bp.get('/rekapan-nama')
+def rekapan_nama():
+    return render_template('index.html', **_page_context('rekapan_nama'))
 
 
 @main_bp.get('/riwayat')
@@ -168,6 +176,29 @@ def api_delete_all_entries():
         'cuts': get_recent_cuts(),
         'people_summary': get_people_summary(),
     })
+
+
+@main_bp.route('/api/session-manual', methods=['POST', 'DELETE'])
+def api_session_manual():
+    payload = request.get_json(silent=True) or request.form
+
+    try:
+        person_index = int(payload.get('person_index', ''))
+        session_date = datetime.strptime(payload.get('date', ''), '%Y-%m-%d').date()
+        session_name = (payload.get('session') or '').upper().strip()
+
+        if request.method == 'POST':
+            total = int(payload.get('total', 0) or 0)
+            upsert_session_manual_edit(person_index, session_date, session_name, total)
+            message = 'Rekap sesi berhasil diperbarui.'
+        else:
+            delete_session_manual_edit(person_index, session_date, session_name)
+            message = 'Edit manual sesi berhasil dihapus.'
+    except (TypeError, ValueError) as exc:
+        return jsonify({'ok': False, 'message': str(exc) or 'Data sesi tidak valid.'}), 400
+
+    return jsonify({'ok': True, 'message': message})
+
 
 @main_bp.route('/data/<int:person_index>')
 def person_page(person_index):

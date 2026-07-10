@@ -1,64 +1,57 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="page-shell">
-    <header class="hero card">
-        <div>
-            <p class="eyebrow">Professional Number Entry</p>
-            <h1>{% if active_page == 'rekapan' %}Rekapan Data{% elif active_page == 'riwayat' %}Riwayat Input{% else %}Dashboard Input{% endif %}</h1>
-            <p class="muted">{% if active_page == 'rekapan' %}Grid 00–99, angka bonus, dan rekapan nilai per nama.{% elif active_page == 'riwayat' %}Lihat, cari, dan hapus riwayat input yang sudah masuk.{% else %} {% endif %}</p>
-            <div class="session-clock-card">
-  <div id="liveClock" class="session-clock-time">00:00:00</div>
-  <div id="liveSession" class="session-clock-session">
-    Sekarang Memasuki Sesi -
-  </div>
-</div>
+<div class="page-shell pro-shell">
+    <header class="hero card premium-hero">
+        <div class="hero-main">
+            <h1>
+                {% if active_page == 'rekapan' %}
+                    Rekapan Data
+                {% elif active_page == 'rekapan_nama' %}
+                    Rekapan Nilai per Nama
+                {% elif active_page == 'riwayat' %}
+                    Riwayat Input
+                {% else %}
+                    Dashboard Input
+                {% endif %}
+            </h1>
         </div>
+
         <nav class="top-menu" aria-label="Menu utama">
             <a href="/" class="top-menu-btn {% if active_page == 'dashboard' %}active{% endif %}">Dashboard</a>
             <a href="/rekapan" class="top-menu-btn {% if active_page == 'rekapan' %}active{% endif %}">Rekapan</a>
+            <a href="/rekapan-nama" class="top-menu-btn {% if active_page == 'rekapan_nama' %}active{% endif %}">Rekapan Nama</a>
             <a href="/riwayat" class="top-menu-btn {% if active_page == 'riwayat' %}active{% endif %}">Riwayat Input</a>
             <a href="/logout" class="top-menu-btn logout-menu">Logout</a>
         </nav>
     </header>
 
     {% if active_page == 'dashboard' %}
-    <section class="stats-grid dashboard-stats-grid" id="statsGrid">
-        <div class="card stat-card stat-card-with-action dashboard-omzet-card">
-            <div class="stat-label">Total Omzet</div>
-            <div class="stat-value">{{ dashboard.total_in or 0 }}</div>
-            <div class="stat-sub">Total Harga: Rp {{ "{:,}".format((dashboard.total_in or 0) * 750).replace(",", ".") }}</div>
-            <button id="deleteAllHistoryBtn" type="button" class="ghost danger-btn stat-delete-btn">
-                Hapus Semua Data
-            </button>
-        </div>
-    </section>
-
-    <section class="top-layout">
-        <div class="card form-card">
-            <div class="section-head">
-                <h2>Input Data Masuk</h2>
-                <span class="tag">Cepat</span>
+    <section class="top-layout dashboard-command-layout">
+        <div class="card form-card command-card">
+            <div class="section-head section-head-strong">
+                <div>
+                    <p class="section-kicker">Input Center</p>
+                </div>
             </div>
 
             <form id="entryForm" class="entry-form">
                 <div id="inputWorkArea" class="input-work-area">
                     <label for="raw_input">Masukkan data</label>
-                    <div class="input-row">
+                    <div class="input-row pro-input-row">
                         <textarea
-  id="raw_input"
-  name="raw_input"
-  class="raw-input-area"
-  placeholder="Contoh:
+                            id="raw_input"
+                            name="raw_input"
+                            class="raw-input-area"
+                            placeholder="Contoh:
 07x9
 08x2
 13x2
 15x3"
-  autocomplete="off"
-></textarea>
+                            autocomplete="off"
+                        ></textarea>
 
-                        <div class="input-action-stack" style="display:flex; flex-direction:column; gap:10px; width:198px; flex:0 0 198px;">
-                            <button type="submit" style="width:100%;">Simpan</button>
+                        <div class="input-action-stack">
                             <label for="personSelect" class="input-person-label">Masukkan nilai ke</label>
                             <select id="personSelect" name="person_index" class="modern-person-select">
                                 <option value="1">Suhadi Cua</option>
@@ -68,219 +61,179 @@
                                 <option value="5">Bur</option>
                                 <option value="6">Nure</option>
                             </select>
+                            <button type="submit" class="primary-action">Simpan Data</button>
                         </div>
                     </div>
-
-                    </div></div>
-
                 </div>
             </form>
 
             <div id="alertBox" class="alert hidden"></div>
             <div id="previewBox" class="preview-box hidden"></div>
         </div>
-
     </section>
     {% endif %}
 
     {% if active_page == 'rekapan' %}
     <section class="stats-grid" id="statsGrid">
-        <div class="card stat-card">
+        <div class="card stat-card stat-card-with-action dashboard-omzet-card">
             <div class="stat-label">Total Omzet</div>
             <div class="stat-value">{{ dashboard.total_in or 0 }}</div>
             <div class="stat-sub">Total Harga: Rp {{ "{:,}".format((dashboard.total_in or 0) * 750).replace(",", ".") }}</div>
-        </div>
-        <div class="card stat-card">
-            <div class="stat-label">Total Potong</div>
-            <div class="stat-value">{{ dashboard.total_cut or 0 }}</div>
-        </div>
-        <div class="card stat-card">
-            <div class="stat-label">Total Sisa</div>
-            <div class="stat-value">{{ dashboard.total_remaining or 0 }}</div>
-        </div>
-        <div class="card stat-card">
-            <div class="stat-label">Transaksi Input</div>
-            <div class="stat-value">{{ dashboard.transaction_count or 0 }}</div>
-        </div>
-        <div class="card stat-card">
-            <div class="stat-label">Angka Aktif</div>
-            <div class="stat-value">{{ dashboard.active_numbers or 0 }}</div>
+            <button id="deleteAllHistoryBtn" type="button" class="ghost danger-btn stat-delete-btn">Hapus Semua Data</button>
         </div>
     </section>
 
-    <section class="card cut-card rekapan-cut-card">
-    <div class="section-head">
-        <h2>Potong Semua Angka</h2>
-        <span class="tag warning">Aksi Massal</span>
-    </div>
-
-    <form id="cutAllForm" class="cut-form">
-        <div class="field-grid single-col">
+    <section class="card cut-card rekapan-cut-card action-surface-card">
+        <div class="section-head section-head-strong">
             <div>
-                <label for="cut_all_value">Jumlah potong</label>
-                <input id="cut_all_value" name="cut_value" type="number" min="1" placeholder="10">
+                <h2>Potong Semua Angka</h2>
             </div>
+            <span class="tag warning">Aksi Massal</span>
         </div>
 
-        <label for="cut_all_note">Catatan</label>
-        <input id="cut_all_note" name="note" type="text" placeholder="Opsional">
-
-        <button type="submit" class="secondary">Potong Semua</button>
-    </form>
-
-    <p class="hint">
-        Potong ini berlaku ke semua angka 00 sampai 99 yang masih memiliki sisa aktif.
-    </p>
+        <form id="cutAllForm" class="cut-form compact-form">
+            <div class="field-grid action-field-grid single-action-field-grid">
+                <div>
+                    <label for="cut_all_value">Jumlah potong</label>
+                    <input id="cut_all_value" name="cut_value" type="number" min="1" placeholder="10">
+                </div>
+                <button type="submit" class="secondary">Potong Semua</button>
+            </div>
+        </form>
     </section>
 
-    <section class="card">
-        <div class="section-head">
-            <h2>Grid Rekapan 00–99</h2>
+    <section class="card data-grid-card">
+        <div class="section-head section-head-strong">
+            <div>
+                <p class="section-kicker">Number Board</p>
+                <h2>Grid Rekapan 00–99</h2>
+            </div>
             <div class="toolbar">
                 <input id="searchNumber" type="text" placeholder="Cari angka, contoh 72">
                 <button id="filterActiveBtn" type="button" class="ghost">Tampilkan aktif saja</button>
             </div>
         </div>
 
-<section class="card">
-  <div class="section-head">
-    <h2>Kirim</h2>
-    <button id="copyActiveBtn" type="button" class="ghost">Copy</button>
-  </div>
-
-  <textarea
-    id="activeCopyBox"
-    class="copy-box mono"
-    readonly
-    placeholder="Angka aktif akan muncul di sini..."
-  ></textarea>
-</section>
-
-<div id="gridBoard" class="grid-board">
-    {% if grid_data %}
-        {% for item in grid_data %}
-            <div
-                class="num-card {% if (item['remaining'] or 0) == 0 and not item['has_data'] %}inactive{% endif %}"
-                data-number="{{ item['number'] }}"
-            >
-                <div class="num-head">
-                    <div class="num-index mono">{{ item['number'] }}</div>
-                    <div class="badge">
-                        {% if item['has_data'] or (item['remaining'] or 0) > 0 %}
-                            aktif
-                        {% else %}
-                            kosong
-                        {% endif %}
-                    </div>
+        <div class="send-panel">
+            <div class="send-panel-head">
+                <div>
+                    <p class="section-kicker">Format Kirim</p>
+                    <h3>Kirim Angka Aktif</h3>
                 </div>
-
-                <div class="num-values mono">
-                    <div>
-                        <strong>Masuk:</strong>
-                        {% if item['value_details'] %}
-                            {% for detail in item['value_details'] %}
-                                <span
-                                    class="value-chip"
-                                    data-tooltip="{{ detail['person_name'] }}"
-                                    title="{{ detail['person_name'] }}"
-                                >{{ detail['value'] }}</span>
-                            {% endfor %}
-                        {% elif item['value_list'] %}
-                            {% for value in item['value_list'] %}
-                                <span class="value-chip">{{ value }}</span>
-                            {% endfor %}
-                        {% else %}
-                            -
-                        {% endif %}
-                    </div>
-                </div>
-
-                <div class="num-footer">
-                    <div class="mini">
-                        <span>Total</span>
-                        <strong>{{ item['total_in'] or 0 }}</strong>
-                    </div>
-                    <div class="mini">
-                        <span>Potong</span>
-                        <strong>{{ item['total_cut'] or 0 }}</strong>
-                    </div>
-                    <div class="mini">
-                        <span>Sisa</span>
-                        <strong>{{ item['remaining'] or 0 }}</strong>
-                    </div>
-                </div>
+                <button id="copyActiveBtn" type="button" class="ghost">Copy</button>
             </div>
-        {% endfor %}
-    {% else %}
-        <div class="empty-state">Grid belum tersedia.</div>
-    {% endif %}
-</div>
+            <textarea id="activeCopyBox" class="copy-box mono" readonly placeholder="Angka aktif akan muncul di sini..."></textarea>
+        </div>
+
+        <div id="gridBoard" class="grid-board">
+            {% if grid_data %}
+                {% for item in grid_data %}
+                    <div class="num-card {% if (item['remaining'] or 0) == 0 and not item['has_data'] %}inactive{% endif %}" data-number="{{ item['number'] }}">
+                        <div class="num-head">
+                            <div class="num-index mono">{{ item['number'] }}</div>
+                            <div class="badge">{% if item['has_data'] or (item['remaining'] or 0) > 0 %}aktif{% else %}kosong{% endif %}</div>
+                        </div>
+
+                        <div class="num-values mono">
+                            <div>
+                                <strong>Masuk:</strong>
+                                {% if item['value_details'] %}
+                                    {% for detail in item['value_details'] %}
+                                        <span class="value-chip" data-tooltip="{{ detail['person_name'] }}" title="{{ detail['person_name'] }}">{{ detail['value'] }}</span>
+                                    {% endfor %}
+                                {% elif item['value_list'] %}
+                                    {% for value in item['value_list'] %}
+                                        <span class="value-chip">{{ value }}</span>
+                                    {% endfor %}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="num-footer">
+                            <div class="mini"><span>Total</span><strong>{{ item['total_in'] or 0 }}</strong></div>
+                            <div class="mini"><span>Potong</span><strong>{{ item['total_cut'] or 0 }}</strong></div>
+                            <div class="mini {% if (item['remaining'] or 0) < 0 %}negatif{% else %}positif{% endif %}"><span>Sisa</span><strong>{{ item['remaining'] or 0 }}</strong></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">Grid belum tersedia.</div>
+            {% endif %}
+        </div>
     </section>
 
-<div class="bonus-number-wrap">
-  <label for="bonusNumberInput">Angka bonus</label>
-  <input
-    id="bonusNumberInput"
-    type="text"
-    maxlength="2"
-    placeholder="Contoh: 89"
-    autocomplete="off"
-  >
-  <p class="hint">
-    Angka ini tidak masuk rekapan. Dipakai untuk hitung bonus Rp 65.000 per angka.
-  </p>
-</div>
+    <div id="alertBox" class="alert hidden"></div>
+    <div id="previewBox" class="preview-box hidden"></div>
+    {% endif %}
 
-    <section class="card division-card">
-        <div class="section-head">
-            <h2>Rekapan Nilai per Nama</h2>
-            <span class="tag">Berdasarkan nama yang dipilih</span>
+    {% if active_page == 'rekapan_nama' %}
+    <section class="card division-card pro-division-card">
+        <div class="section-head section-head-strong">
+            <div>
+                <p class="section-kicker">People Summary</p>
+                <h2>Rekapan Nilai per Nama</h2>
+            </div>
         </div>
+
+        <div class="bonus-number-wrap premium-input-block">
+            <label for="bonusNumberInput">Angka bonus</label>
+            <input id="bonusNumberInput" type="text" maxlength="2" placeholder="Contoh: 89" autocomplete="off">
+        </div>
+
         <div id="divisionBoard" class="division-board"></div>
     </section>
+
+    <div id="alertBox" class="alert hidden"></div>
+    <div id="previewBox" class="preview-box hidden"></div>
     {% endif %}
 
-{% if active_page == 'riwayat' %}
-<section class="card history-section">
-  <div class="section-head">
-    <h2>Riwayat Input</h2>
-
-    <div class="toolbar history-toolbar">
-      <input id="historySearch" type="text" placeholder="Cari riwayat...">
-
-      <div id="historyPagination" class="pagination"></div>
-
-    </div>
-  </div>
-
-  <div id="entryHistory" class="history-list">
-    {% if entries %}
-      {% for item in entries %}
-        <div class="history-card">
-          <div class="history-top">
+    {% if active_page == 'riwayat' %}
+    <section class="card history-section pro-history-section">
+        <div class="section-head section-head-strong">
             <div>
-              <div class="history-raw mono">{{ item['raw_input'] }}</div>
-              <div class="history-meta">
-                Detail:
-                {% if item['items'] %}
-                  {% for row in item['items'] %}
-                    {{ "%02d"|format(row['number']|int) }}={{ row['value'] }}{% if not loop.last %}, {% endif %}
-                  {% endfor %}
-                {% else %}
-                  -
-                {% endif %}
-              </div>
+                <p class="section-kicker">Audit Trail</p>
+                <h2>Riwayat Input</h2>
             </div>
-            <button class="small-btn" data-delete-id="{{ item['id'] }}">Hapus</button>
-          </div>
-          <div class="history-meta">{{ item['created_at'] }}</div>
-        </div>
-      {% endfor %}
-    {% else %}
-      <div class="empty-state">Belum ada riwayat input.</div>
-    {% endif %}
-  </div>
-</section>
-{% endif %}
 
+            <div class="toolbar history-toolbar">
+                <input id="historySearch" type="text" placeholder="Cari riwayat...">
+                <div id="historyPagination" class="pagination"></div>
+            </div>
+        </div>
+
+        <div id="entryHistory" class="history-list">
+            {% if entries %}
+                {% for item in entries %}
+                    <div class="history-card">
+                        <div class="history-top">
+                            <div>
+                                <div class="history-raw mono">{{ item['raw_input'] }}</div>
+                                <div class="history-meta">
+                                    Detail:
+                                    {% if item['items'] %}
+                                        {% for row in item['items'] %}
+                                            {{ "%02d"|format(row['number']|int) }}={{ row['value'] }}{% if not loop.last %}, {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <button class="small-btn" data-delete-id="{{ item['id'] }}">Hapus</button>
+                        </div>
+                        <div class="history-meta">{{ item['created_at'] }}</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">Belum ada riwayat input.</div>
+            {% endif %}
+        </div>
+    </section>
+
+    <div id="alertBox" class="alert hidden"></div>
+    <div id="previewBox" class="preview-box hidden"></div>
+    {% endif %}
+</div>
 {% endblock %}

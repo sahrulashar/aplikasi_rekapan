@@ -1,14 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="page-shell">
-  <section class="card person-recap-card">
-    <div class="section-head">
-      <div>
-        <h2>{{ person_name }}</h2>
+<div class="page-shell pro-shell person-page-shell">
+  <header class="hero card premium-hero person-hero">
+    <div class="hero-main">
+      <div class="brand-row">
+        <div class="brand-mark">{{ person_index }}</div>
+        <div>
+          <p class="brand-kicker">Detail Rekapan</p>
+          <strong>{{ person_name }}</strong>
+        </div>
       </div>
 
-      <a href="/" class="back-btn">Kembali</a>
+      <p class="eyebrow">Session Recap</p>
+      <h1>{{ person_name }}</h1>
+      <p class="muted hero-copy">Rincian rekap sesi SDY, SGP, HKG, total rupiah, bonus, dan total akhir per tanggal.</p>
+    </div>
+
+    <nav class="top-menu" aria-label="Menu utama">
+      <a href="/" class="top-menu-btn">Dashboard</a>
+      <a href="/rekapan" class="top-menu-btn">Rekapan</a>
+      <a href="/riwayat" class="top-menu-btn">Riwayat Input</a>
+      <a href="/logout" class="top-menu-btn logout-menu">Logout</a>
+    </nav>
+  </header>
+
+  <section class="card person-recap-card premium-recap-card">
+    <div class="section-head section-head-strong">
+      <div>
+        <p class="section-kicker">Personal Ledger</p>
+        <h2>Rekap Sesi</h2>
+      </div>
+      <a href="/rekapan" class="back-btn">Kembali ke Rekapan</a>
     </div>
 
     {% set dates = recaps | map(attribute='date') | unique | list %}
@@ -61,27 +84,15 @@
         {% set total_bonus = sdy.bonus_rp + sgp.bonus_rp + hkg.bonus_rp %}
         {% set total_akhir = total_bonus - total_rp %}
 
-        <div class="recap-row">
+        <div class="recap-row premium-recap-row">
           <div class="recap-date">{{ label.value }}</div>
 
-          <div
-            class="recap-cell session-edit-cell"
-            data-person="{{ person_index }}"
-            data-date="{{ tanggal }}"
-            data-session="SDY"
-          >
+          <div class="recap-cell session-edit-cell" data-person="{{ person_index }}" data-date="{{ tanggal }}" data-session="SDY">
+            <span class="session-pill">SDY</span>
             <input class="session-total-input" type="number" value="{{ sdy.total }}" readonly>
-
             <span>Total Rp: Rp {{ "{:,}".format(sdy.rp).replace(",", ".") }}</span>
-
-            <div class="bonus-line">
-              Bonus Rp: Rp {{ "{:,}".format(sdy.bonus_rp).replace(",", ".") }}
-            </div>
-
-            <div class="akhir-line {% if sdy.akhir < 0 %}minus{% else %}plus{% endif %}">
-              Total Akhir: Rp {{ "{:,}".format(sdy.akhir).replace(",", ".") }}
-            </div>
-
+            <div class="bonus-line">Bonus Rp: Rp {{ "{:,}".format(sdy.bonus_rp).replace(",", ".") }}</div>
+            <div class="akhir-line {% if sdy.akhir < 0 %}minus{% else %}plus{% endif %}">Total Akhir: Rp {{ "{:,}".format(sdy.akhir).replace(",", ".") }}</div>
             <div class="session-actions">
               <button type="button" class="edit-session-btn">Edit</button>
               <button type="button" class="save-session-btn">Simpan</button>
@@ -89,24 +100,12 @@
             </div>
           </div>
 
-          <div
-            class="recap-cell session-edit-cell"
-            data-person="{{ person_index }}"
-            data-date="{{ tanggal }}"
-            data-session="SGP"
-          >
+          <div class="recap-cell session-edit-cell" data-person="{{ person_index }}" data-date="{{ tanggal }}" data-session="SGP">
+            <span class="session-pill">SGP</span>
             <input class="session-total-input" type="number" value="{{ sgp.total }}" readonly>
-
             <span>Total Rp: Rp {{ "{:,}".format(sgp.rp).replace(",", ".") }}</span>
-
-            <div class="bonus-line">
-              Bonus Rp: Rp {{ "{:,}".format(sgp.bonus_rp).replace(",", ".") }}
-            </div>
-
-            <div class="akhir-line {% if sgp.akhir < 0 %}minus{% else %}plus{% endif %}">
-              Total Akhir: Rp {{ "{:,}".format(sgp.akhir).replace(",", ".") }}
-            </div>
-
+            <div class="bonus-line">Bonus Rp: Rp {{ "{:,}".format(sgp.bonus_rp).replace(",", ".") }}</div>
+            <div class="akhir-line {% if sgp.akhir < 0 %}minus{% else %}plus{% endif %}">Total Akhir: Rp {{ "{:,}".format(sgp.akhir).replace(",", ".") }}</div>
             <div class="session-actions">
               <button type="button" class="edit-session-btn">Edit</button>
               <button type="button" class="save-session-btn">Simpan</button>
@@ -114,24 +113,12 @@
             </div>
           </div>
 
-          <div
-            class="recap-cell session-edit-cell"
-            data-person="{{ person_index }}"
-            data-date="{{ tanggal }}"
-            data-session="HKG"
-          >
+          <div class="recap-cell session-edit-cell" data-person="{{ person_index }}" data-date="{{ tanggal }}" data-session="HKG">
+            <span class="session-pill">HKG</span>
             <input class="session-total-input" type="number" value="{{ hkg.total }}" readonly>
-
             <span>Total Rp: Rp {{ "{:,}".format(hkg.rp).replace(",", ".") }}</span>
-
-            <div class="bonus-line">
-              Bonus Rp: Rp {{ "{:,}".format(hkg.bonus_rp).replace(",", ".") }}
-            </div>
-
-            <div class="akhir-line {% if hkg.akhir < 0 %}minus{% else %}plus{% endif %}">
-              Total Akhir: Rp {{ "{:,}".format(hkg.akhir).replace(",", ".") }}
-            </div>
-
+            <div class="bonus-line">Bonus Rp: Rp {{ "{:,}".format(hkg.bonus_rp).replace(",", ".") }}</div>
+            <div class="akhir-line {% if hkg.akhir < 0 %}minus{% else %}plus{% endif %}">Total Akhir: Rp {{ "{:,}".format(hkg.akhir).replace(",", ".") }}</div>
             <div class="session-actions">
               <button type="button" class="edit-session-btn">Edit</button>
               <button type="button" class="save-session-btn">Simpan</button>
@@ -139,17 +126,12 @@
             </div>
           </div>
 
-          <div class="recap-cell total-cell">
+          <div class="recap-cell total-cell premium-total-cell">
+            <span class="session-pill total-pill">TOTAL</span>
             <strong>{{ total_nilai }}</strong>
             <span>Total Rp: Rp {{ "{:,}".format(total_rp).replace(",", ".") }}</span>
-
-            <div class="bonus-line">
-              Bonus Rp: Rp {{ "{:,}".format(total_bonus).replace(",", ".") }}
-            </div>
-
-            <div class="akhir-line {% if total_akhir < 0 %}minus{% else %}plus{% endif %}">
-              Total Akhir: Rp {{ "{:,}".format(total_akhir).replace(",", ".") }}
-            </div>
+            <div class="bonus-line">Bonus Rp: Rp {{ "{:,}".format(total_bonus).replace(",", ".") }}</div>
+            <div class="akhir-line {% if total_akhir < 0 %}minus{% else %}plus{% endif %}">Total Akhir: Rp {{ "{:,}".format(total_akhir).replace(",", ".") }}</div>
           </div>
         </div>
       {% else %}

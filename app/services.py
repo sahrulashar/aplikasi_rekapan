@@ -279,6 +279,8 @@ def delete_entry(entry_id: int) -> None:
 def delete_all_entries() -> None:
     EntryNumber.query.delete()
     Entry.query.delete()
+    SessionRecap.query.delete()
+    SessionManualEdit.query.delete()
     Cut.query.delete()
     db.session.commit()
 
@@ -335,7 +337,11 @@ def format_tanggal_indonesia(date_obj) -> str:
 
 
 def get_person_session_recaps(person_index: int, bonus_map: dict | None = None) -> list:
+    """Ambil rekap sesi per orang, termasuk override edit manual bila ada."""
     bonus_map = bonus_map or {}
+    session_order = {"SDY": 1, "SGP": 2, "HKG": 3, "DI LUAR SESI": 4}
+
+    totals_by_key: dict[tuple, int] = {}
 
     rows = (
         db.session.query(
@@ -345,19 +351,90 @@ def get_person_session_recaps(person_index: int, bonus_map: dict | None = None) 
         )
         .filter(SessionRecap.person_index == person_index)
         .group_by(SessionRecap.session_date, SessionRecap.session_name)
-        .order_by(SessionRecap.session_date.desc(), SessionRecap.session_name.asc())
         .all()
+    )
+
+    for session_date, session_name, total in rows:
+        totals_by_key[(session_date, session_name)] = int(total or 0)
+
+    manual_rows = (
+        SessionManualEdit.query
+        .filter(SessionManualEdit.person_index == person_index)
+        .all()
+    )
+
+    for row in manual_rows:
+        totals_by_key[(row.session_date, row.session_name)] = int(row.total or 0)
+
+    ordered_items = sorted(
+        totals_by_key.items(),
+        key=lambda item: (item[0][0], -session_order.get(item[0][1], 99)),
+        reverse=True,
     )
 
     return [
         {
-            "date": row[0].strftime("%Y-%m-%d"),
-            "date_label": format_tanggal_indonesia(row[0]),
-            "session": row[1],
-            "total": int(row[2] or 0),
-            "total_rp": int(row[2] or 0) * 750,
-            "bonus_rp": int(bonus_map.get(row[1], 0)),
-            "total_akhir": int(bonus_map.get(row[1], 0)) - (int(row[2] or 0) * 750),
+            "date": session_date.strftime("%Y-%m-%d"),
+            "date_label": format_tanggal_indonesia(session_date),
+            "session": session_name,
+            "total": total,
+            "total_rp": total * 750,
+            "bonus_rp": int(bonus_map.get(session_name, 0)),
+            "total_akhir": int(bonus_map.get(session_name, 0)) - (total * 750),
         }
-        for row in rows
+        for (session_date, session_name), total in ordered_items
     ]
+
+
+def upsert_session_manual_edit(person_index: int, session_date, session_name: str, total: int) -> SessionManualEdit:
+    """Simpan atau perbarui total manual untuk satu orang, tanggal, dan sesi."""
+    if person_index < 1 or person_index > 6:
+        raise ValueError("Pilihan nama tidak valid.")
+
+    session_name = (session_name or "").upper().strip()
+    if session_name not in {"SDY", "SGP", "HKG", "DI LUAR SESI"}:
+        raise ValueError("Sesi tidak valid.")
+
+    if total < 0:
+        raise ValueError("Total tidak boleh negatif.")
+
+    row = (
+        SessionManualEdit.query
+        .filter_by(
+            person_index=person_index,
+            session_date=session_date,
+            session_name=session_name,
+        )
+        .first()
+    )
+
+    if row is None:
+        row = SessionManualEdit(
+            person_index=person_index,
+            session_date=session_date,
+            session_name=session_name,
+            total=total,
+        )
+        db.session.add(row)
+    else:
+        row.total = total
+        row.updated_at = datetime.utcnow()
+
+    db.session.commit()
+    return row
+
+
+def delete_session_manual_edit(person_index: int, session_date, session_name: str) -> None:
+    """Hapus override manual; data asli dari input tetap tidak berubah."""
+    session_name = (session_name or "").upper().strip()
+    (
+        SessionManualEdit.query
+        .filter_by(
+            person_index=person_index,
+            session_date=session_date,
+            session_name=session_name,
+        )
+        .delete()
+    )
+    db.session.commit()
+

@@ -3,161 +3,331 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Aplikasi</title>
-
+  <meta name="theme-color" content="#07111f">
+  <title>Login - Aplikasi Rekapan Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
+    :root {
+      --bg: #06101f;
+      --panel: rgba(15, 23, 42, .72);
+      --panel-strong: rgba(2, 6, 23, .82);
+      --line: rgba(148, 163, 184, .20);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --green: #34d399;
+      --red: #fb7185;
+      --shadow: 0 30px 90px rgba(0, 0, 0, .45);
     }
 
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
     body {
-      margin: 0;
       min-height: 100vh;
-      background: #f4f7fb;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 16% 14%, rgba(56, 189, 248, .24), transparent 28%),
+        radial-gradient(circle at 86% 8%, rgba(52, 211, 153, .18), transparent 24%),
+        radial-gradient(circle at 50% 100%, rgba(99, 102, 241, .14), transparent 32%),
+        linear-gradient(135deg, #050816 0%, #07111f 48%, #0b1020 100%);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.75), transparent 78%);
+    }
+
+    .login-layout {
+      width: min(1040px, 100%);
+      display: grid;
+      grid-template-columns: 1.05fr 420px;
+      gap: 22px;
+      align-items: stretch;
+      position: relative;
+      z-index: 1;
+    }
+
+    .showcase, .login-card {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(15, 23, 42, .78), rgba(2, 6, 23, .58));
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px) saturate(150%);
+      overflow: hidden;
+    }
+
+    .showcase {
+      min-height: 540px;
+      padding: 34px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .showcase::after {
+      content: '';
+      position: absolute;
+      right: -160px;
+      top: -180px;
+      width: 460px;
+      height: 460px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(56,189,248,.30), transparent 66%);
+      pointer-events: none;
+    }
+
+    .brand-row {
       display: flex;
       align-items: center;
-      justify-content: center;
-      color: #0f172a;
+      gap: 14px;
+      position: relative;
+      z-index: 1;
     }
 
-    .login-card {
-      width: 100%;
-      max-width: 380px;
-      background: #ffffff;
+    .brand-mark {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
       border-radius: 18px;
-      padding: 28px;
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+      background: linear-gradient(135deg, #38bdf8, #2563eb 55%, #34d399);
+      color: white;
+      font-weight: 900;
+      letter-spacing: -.05em;
+      box-shadow: 0 20px 42px rgba(37, 99, 235, .28);
+    }
+
+    .brand-kicker, .eyebrow {
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: .13em;
+      font-size: 11px;
+      font-weight: 900;
+      color: #7dd3fc;
+    }
+
+    .brand-row strong { display: block; margin-top: 4px; font-size: 17px; }
+
+    .showcase-main { position: relative; z-index: 1; max-width: 560px; }
+    .eyebrow {
+      display: inline-flex;
+      padding: 8px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(56,189,248,.26);
+      background: rgba(56,189,248,.10);
+      margin-bottom: 16px;
+    }
+
+    .showcase h1 {
+      margin: 0;
+      font-size: clamp(36px, 6vw, 58px);
+      line-height: .96;
+      letter-spacing: -.065em;
+    }
+
+    .showcase p {
+      margin: 18px 0 0;
+      max-width: 520px;
+      color: #cbd5e1;
+      line-height: 1.7;
+    }
+
+    .feature-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .feature-card {
+      padding: 16px;
+      border: 1px solid rgba(148, 163, 184, .17);
+      border-radius: 20px;
+      background: rgba(2, 6, 23, .42);
+    }
+
+    .feature-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 8px;
+    }
+
+    .feature-card strong { font-size: 18px; }
+
+    .login-card {
+      padding: 30px;
+      min-height: 540px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .login-title {
       margin: 0;
-      font-size: 30px;
-      font-weight: 800;
-      color: #002b70;
+      font-size: 34px;
+      line-height: 1;
+      letter-spacing: -.055em;
+      font-weight: 900;
     }
 
     .login-subtitle {
-      margin: 8px 0 22px;
-      color: #003b88;
-      font-size: 15px;
+      margin: 12px 0 28px;
+      color: var(--muted);
+      line-height: 1.6;
     }
 
-    .form-group {
-      margin-bottom: 14px;
+    .form-group { margin-bottom: 14px; }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #cbd5e1;
+      font-size: 13px;
+      font-weight: 800;
     }
 
     .form-input {
       width: 100%;
-      height: 44px;
-      border: 1px solid #d9dee8;
-      border-radius: 13px;
-      padding: 0 14px;
-      font-size: 14px;
+      min-height: 52px;
+      border: 1px solid rgba(148, 163, 184, .22);
+      border-radius: 17px;
+      padding: 0 16px;
+      color: var(--text);
+      background: rgba(2, 6, 23, .52);
       outline: none;
-      transition: 0.2s;
+      font-size: 15px;
+      font-weight: 700;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+      transition: border-color .18s ease, box-shadow .18s ease;
     }
 
     .form-input:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+      border-color: rgba(56, 189, 248, .80);
+      box-shadow: 0 0 0 4px rgba(56, 189, 248, .12), inset 0 1px 0 rgba(255,255,255,.06);
     }
 
-    .password-wrap {
-      position: relative;
-    }
-
-    .password-wrap .form-input {
-      padding-right: 44px;
-    }
+    .password-wrap { position: relative; }
+    .password-wrap .form-input { padding-right: 52px; }
 
     .toggle-password {
       position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      border: 0;
-      background: transparent;
+      right: 10px;
+      bottom: 8px;
+      width: 38px;
+      height: 38px;
+      border: 1px solid rgba(148, 163, 184, .22);
+      border-radius: 13px;
+      background: rgba(15, 23, 42, .76);
+      color: #dbeafe;
       cursor: pointer;
-      font-size: 15px;
-      color: #64748b;
+      font-weight: 800;
     }
 
     .login-btn {
       width: 100%;
-      height: 44px;
+      min-height: 52px;
       border: 0;
-      border-radius: 7px;
-      background: #18181b;
+      border-radius: 17px;
+      background: linear-gradient(135deg, #38bdf8, #2563eb 58%, #34d399);
       color: white;
-      font-weight: 700;
+      font-weight: 900;
       cursor: pointer;
-      margin-top: 2px;
-      transition: 0.2s;
+      margin-top: 6px;
+      box-shadow: 0 18px 40px rgba(37, 99, 235, .26);
+      transition: transform .16s ease, filter .16s ease;
     }
 
-    .login-btn:hover {
-      background: #000000;
-      transform: translateY(-1px);
-    }
+    .login-btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
 
     .error {
-      background: #fee2e2;
-      color: #991b1b;
-      padding: 10px 12px;
-      border-radius: 12px;
-      margin-bottom: 14px;
-      font-size: 13px;
+      background: rgba(251, 113, 133, .13);
+      color: #fecdd3;
+      border: 1px solid rgba(251, 113, 133, .28);
+      padding: 12px 14px;
+      border-radius: 16px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      font-weight: 700;
     }
 
-    @media (max-width: 480px) {
-      body {
-        padding: 18px;
-      }
+    .login-note {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
 
-      .login-card {
-        padding: 24px;
-      }
+    @media (max-width: 900px) {
+      .login-layout { grid-template-columns: 1fr; }
+      .showcase { min-height: auto; gap: 46px; }
+      .login-card { min-height: auto; }
+    }
+
+    @media (max-width: 560px) {
+      body { padding: 14px; }
+      .showcase, .login-card { border-radius: 24px; padding: 24px; }
+      .feature-row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
-
 <body>
-  <main class="login-card">
-    <h1 class="login-title">Login</h1>
-    <p class="login-subtitle">My Aplikasi</p>
-
-    {% if error %}
-      <div class="error">{{ error }}</div>
-    {% endif %}
-
-    <form method="POST">
-      <div class="form-group">
-        <input
-          class="form-input"
-          type="text"
-          name="username"
-          placeholder="Username"
-          autocomplete="username"
-          required
-        >
+  <main class="login-layout">
+    <section class="showcase" aria-label="Informasi aplikasi">
+      <div class="showcase-main">
+        <p class="eyebrow">Secure Workspace</p>
+      <p></p>
+      <div class="feature-row">
+        <div class="feature-card"><span>Module</span><strong>Input</strong></div>
+        <div class="feature-card"><span>Board</span><strong>Grid 00–99</strong></div>
+        <div class="feature-card"><span>Audit</span><strong>Riwayat Data</strong></div>
       </div>
+    </section>
 
-      <div class="form-group password-wrap">
-        <input
-          id="passwordInput"
-          class="form-input"
-          type="password"
-          name="password"
-          placeholder="Password"
-          autocomplete="current-password"
-          required
-        >
-        <button class="toggle-password" type="button" onclick="togglePassword()">👁</button>
-      </div>
+    <section class="login-card">
+      <h1 class="login-title">Login</h1>
+      <p class="login-subtitle">Masuk untuk membuka dashboard rekapan profesional.</p>
 
-      <button class="login-btn" type="submit">Login</button>
-    </form>
+      {% if error %}
+        <div class="error">{{ error }}</div>
+      {% endif %}
+
+      <form method="POST">
+        <div class="form-group">
+          <label class="form-label" for="usernameInput">Username</label>
+          <input id="usernameInput" class="form-input" type="text" name="username" placeholder="Masukkan username" autocomplete="username" required>
+        </div>
+
+        <div class="form-group password-wrap">
+          <label class="form-label" for="passwordInput">Password</label>
+          <input id="passwordInput" class="form-input" type="password" name="password" placeholder="Masukkan password" autocomplete="current-password" required>
+          <button class="toggle-password" type="button" onclick="togglePassword()" aria-label="Tampilkan atau sembunyikan password">👁</button>
+        </div>
+
+        <button class="login-btn" type="submit">Masuk Dashboard</button>
+      </form>
+
+      <div class="login-note">Akses hanya untuk pengguna yang memiliki kredensial.</div>
+    </section>
   </main>
 
   <script>
