@@ -27,6 +27,14 @@
     </header>
 
     {% if active_page == 'dashboard' %}
+    <section class="stats-grid" id="statsGrid">
+        <div class="card stat-card stat-card-with-action dashboard-omzet-card">
+            <div class="stat-label">Total Omzet</div>
+            <div class="stat-value">{{ dashboard.total_in or 0 }}</div>
+            <div class="stat-sub">Total Harga: Rp {{ "{:,}".format((dashboard.total_in or 0) * 750).replace(",", ".") }}</div>
+            <button id="deleteAllHistoryBtn" type="button" class="ghost danger-btn stat-delete-btn">Hapus Semua Data</button>
+        </div>
+    </section>
     <section class="top-layout dashboard-command-layout">
         <div class="card form-card command-card">
             <div class="section-head section-head-strong">
@@ -44,10 +52,10 @@
                             name="raw_input"
                             class="raw-input-area"
                             placeholder="Contoh:
-07x9
-08x2
-13x2
-15x3"
+                                            07x9
+                                            08x2
+                                            13x2
+                                            15x3"
                             autocomplete="off"
                         ></textarea>
 
@@ -71,6 +79,7 @@
             <div id="previewBox" class="preview-box hidden"></div>
         </div>
     </section>
+    
     {% endif %}
 
     {% if active_page == 'rekapan' %}

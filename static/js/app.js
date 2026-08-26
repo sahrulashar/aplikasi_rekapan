@@ -274,7 +274,7 @@ function renderStats() {
   const totalMasuk = Number(dashboard.total_in ?? 0);
   const totalHarga = totalMasuk * 750;
 
-  if (isRekapanPage) {
+  if (isDashboardPage || isRekapanPage) {
     statsGrid.classList.add('dashboard-stats-grid');
     statsGrid.innerHTML = `
       <div class="card stat-card stat-card-with-action dashboard-omzet-card">
